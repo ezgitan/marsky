@@ -2,8 +2,13 @@ import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flame/components.dart';
+import 'package:flame/collisions.dart';
 
-class Player extends RectangleComponent {
+import '../runner_game.dart';
+import 'obstacle.dart';
+
+class Player extends RectangleComponent
+    with HasGameReference<RunnerGame>, CollisionCallbacks {
   Player()
     : super(
         size: Vector2.all(40),
@@ -11,6 +16,23 @@ class Player extends RectangleComponent {
       );
 
   double _screenWidth = 0;
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+    await add(RectangleHitbox());
+  }
+
+  @override
+  void onCollisionStart(
+    Set<Vector2> intersectionPoints,
+    PositionComponent other,
+  ) {
+    super.onCollisionStart(intersectionPoints, other);
+    if (other is Obstacle) {
+      game.onPlayerHit();
+    }
+  }
 
   @override
   void onGameResize(Vector2 size) {

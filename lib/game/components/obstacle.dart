@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flame/components.dart';
+import 'package:flame/collisions.dart';
 
 class Obstacle extends RectangleComponent with HasGameReference {
   Obstacle({required double x, required double width})
@@ -11,6 +12,12 @@ class Obstacle extends RectangleComponent with HasGameReference {
       );
 
   static const double speed = 180;
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+    await add(RectangleHitbox(collisionType: CollisionType.passive));
+  }
 
   @override
   void update(double dt) {
