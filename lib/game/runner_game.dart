@@ -2,6 +2,7 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 
 import 'components/player.dart';
+import 'obstacle_spawner.dart';
 
 class RunnerGame extends FlameGame with DragCallbacks {
   final Player _player = Player();
@@ -10,6 +11,7 @@ class RunnerGame extends FlameGame with DragCallbacks {
   Future<void> onLoad() async {
     await super.onLoad();
     await add(_player);
+    await add(ObstacleSpawner());
   }
 
   @override
